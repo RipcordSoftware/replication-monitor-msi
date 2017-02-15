@@ -18,9 +18,9 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
     <Property Id="PYTHON_EXE" Value="$(var.PythonExe)" />
     <Property Id="REPLMON_PY" Value="usr\local\replication-monitor\replication_monitor.py" />
-    <!--<WixVariable Id="WixUIBannerBmp" Value="$(var.TopDir)\win32\installer\WixUIBannerBmp.bmp" />
-    <WixVariable Id="WixUIDialogBmp" Value="$(var.TopDir)\win32\installer\WixUIDialogBmp.bmp" />
-    <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseFile)" />
+    <WixVariable Id="WixUIBannerBmp" Value="images\replication-monitor-banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="images\replication-monitor-dialog.bmp" />
+    <!--<WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseFile)" />
     <Condition Message="[ProductName] requires that your computer is running at least Windows 7">VersionNT&gt;=601</Condition>-->
 
     <UI>
