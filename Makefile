@@ -1,7 +1,17 @@
+# set ARCH on the command line to x86 for 32bit builds, the default is x64
+ARCH?=x64
+
+MINGW_PREFIX:=mingw-w64-x86_64
+MINGW_ROOT:=mingw64
+
+ifeq ($(ARCH), x86)
+	MINGW_PREFIX:=mingw-w64-i686
+	MINGW_ROOT:=mingw32
+endif
+
 BINARIES_ROOT:=SourceDir
-MINGW_PREFIX?=mingw-w64-x86_64
 WIX_ROOT?=/c/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10/bin
-WIX_ARCH:=x64
+WIX_ARCH:=$(ARCH)
 
 .PHONY: all clean .binaries .binaries_init .binaries_core .binaries_gtk .binaries_python .binaries_source .binaries_trim .installer
 
@@ -22,10 +32,10 @@ binaries.wxs: .binaries .binaries_trim
 	$(WIX_ROOT)/heat.exe dir "$(BINARIES_ROOT)" -gg -dr INSTALLDIR -cg binaries -sfrag -sreg -srd -suid -template fragment -out $@
 
 .binaries: .binaries_python .binaries_source
-	"$(BINARIES_ROOT)/mingw64/bin/python3" "$(BINARIES_ROOT)/mingw64/bin/pip3-script.py" install -r "$(BINARIES_ROOT)/usr/local/replication-monitor/requirements.txt"
+	"$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/python3" "$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/pip3-script.py" install -r "$(BINARIES_ROOT)/usr/local/replication-monitor/requirements.txt"
 
 .binaries_python: .binaries_gtk
-	if [ ! -f "$(BINARIES_ROOT)/mingw64/bin/python3" ]; then \
+	if [ ! -f "$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/python3" ]; then \
 		pacman -S $(MINGW_PREFIX)-python3 $(MINGW_PREFIX)-python3-pip $(MINGW_PREFIX)-python3-gobject --noconfirm --root "$(BINARIES_ROOT)"; \
 	fi
 	
@@ -38,7 +48,7 @@ binaries.wxs: .binaries .binaries_trim
 	fi
 
 .binaries_gtk: .binaries_core
-	if [ ! -d "$(BINARIES_ROOT)/mingw64/lib/gtk-3.0" ]; then \
+	if [ ! -d "$(BINARIES_ROOT)/$(MINGW_ROOT)/lib/gtk-3.0" ]; then \
 		pacman -S $(MINGW_PREFIX)-gtk3 --noconfirm --root "$(BINARIES_ROOT)"; \
 	fi
 
@@ -61,19 +71,19 @@ binaries.wxs: .binaries .binaries_trim
 	rm -rf "$(BINARIES_ROOT)"/usr/share/man
 	rm -rf "$(BINARIES_ROOT)"/usr/share/info
 	rm -rf "$(BINARIES_ROOT)"/var/lib/pacman/local
-	rm -f "$(BINARIES_ROOT)"/mingw64/lib/*.a
-	rm -rf "$(BINARIES_ROOT)"/mingw64/lib/python3.5/test
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/gtk-doc
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/man
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/doc
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/locale
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/terminfo
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/tcl?.?
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/tk?.?
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/tdbc*
-	rm -rf "$(BINARIES_ROOT)"/mingw64/share/pkgconfig
-	rm -rf "$(BINARIES_ROOT)"/mingw64/bin/gtk3-demo*.exe
-	rm -rf "$(BINARIES_ROOT)"/mingw64/include/*
+	rm -f "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/*.a
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/python3.5/test
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/gtk-doc
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/man
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/doc
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/locale
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/terminfo
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/tcl?.?
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/tk?.?
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/tdbc*
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/pkgconfig
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/bin/gtk3-demo*.exe
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/include/*
 
 clean:
 	rm -rf $(BINARIES_ROOT)
