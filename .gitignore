@@ -3,3 +3,4 @@ binaries.wxs
 *.wixobj
 *.wixpdb
 *.msi
+tmp/*

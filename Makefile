@@ -33,8 +33,14 @@ replication-monitor.wixobj: replication-monitor.wxs
 binaries.wixobj: binaries.wxs
 	$(WIX_ROOT)/candle.exe -arch $(WIX_ARCH) $<
 	
-binaries.wxs: .binaries .binaries_trim
+binaries.wxs: .binaries .binaries_trim tmp/license.rtf
 	$(WIX_ROOT)/heat.exe dir "$(BINARIES_ROOT)" -gg -dr INSTALLDIR -cg binaries -sfrag -sreg -srd -suid -template fragment -out $@
+	
+tmp/license.rtf:
+	mkdir -p tmp && \
+	echo "{\rtf1\ansi\pard" > $@ && \
+	sed 's/^$$/\\par\\par/g' LICENSE >> $@ && \
+	echo "\par}" >> $@
 
 .binaries: .binaries_python .binaries_source
 	if [ "$(DISABLE_PYTHON)" == "" -a "$(DISABLE_CLONE)" == "" ]; then \
