@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Replication Monitor" Language="1033" Version="0.1.8" Manufacturer="Ripcord Software Ltd" UpgradeCode="{45a21844-f2d6-11e6-bc64-92361f002671}">
+    <Package Id="*" Description="Replication Monitor" Comments="Contact: your local administrator" InstallerVersion="405" Compressed="yes" Keywords="couchdb,replication" Languages="1033" Manufacturer="Ripcord Software Ltd" InstallScope="perMachine"/>
+    <!--<Icon Id="icon.ico" SourceFile="$(var.TopDir)\gedit\resources\pixmaps\gedit.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />-->
+    <Media Id="1" Cabinet="data.cab" EmbedCab="yes" />
+
+    <!-- Features -->
+    <Feature Id="replmon" Title="replmon" Level="1">
+      <ComponentGroupRef Id="binaries" />
+      <ComponentGroupRef Id="startMenuShortcuts" />
+      <!--<ComponentGroupRef Id="licenseFiles" />-->
+    </Feature>
+
+    <!-- UI -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+    <!--<WixVariable Id="WixUIBannerBmp" Value="$(var.TopDir)\win32\installer\WixUIBannerBmp.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.TopDir)\win32\installer\WixUIDialogBmp.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseFile)" />
+    <Condition Message="[ProductName] requires that your computer is running at least Windows 7">VersionNT&gt;=601</Condition>-->
+
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+    </UI>
+
+    <InstallExecuteSequence>
+      <RemoveExistingProducts Before="InstallInitialize" />
+      <!--<Custom Action="SetCompileSchemasCommand" After="InstallFiles">Not Installed</Custom>
+      <Custom Action="CompileSchemas" After="SetCompileSchemasCommand">Not Installed</Custom>
+      <Custom Action="SetUpdateIconCacheCommand" After="CompileSchemas">Not Installed</Custom>
+      <Custom Action="UpdateIconCache" After="SetUpdateIconCacheCommand">Not Installed</Custom>
+      <Custom Action="SetUpdatePixbufLoadersCommand" After="UpdateIconCache">Not Installed</Custom>
+      <Custom Action="UpdatePixbufLoaders" After="SetUpdatePixbufLoadersCommand">Not Installed</Custom>-->
+    </InstallExecuteSequence>
+
+  </Product>
+
+  <!-- Directory Tree -->
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder" Name="ProgramFiles64Folder">
+        <Directory Name="Replication Monitor" Id="replmon_dir">
+          <Directory Id="INSTALLDIR">
+            <!--<Directory Name="license" Id="replmon_license" />-->
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuDir" Name="Replication Monitor" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <!-- Components -->
+  <Fragment>
+    <ComponentGroup Id="startMenuShortcuts">
+      <Component Id="programShortcuts" Guid="{d3723c12-f2d6-11e6-bc64-92361f002671}" Directory="ProgramMenuDir">
+        <RegistryValue Key="Software\[Manufacturer]\[ProductName]" Root="HKCU" Type="string" Value="[INSTALLDIR]" Name="InstallPath" />
+        <Shortcut Id="replmonExec" Name="Replication Monitor" Description="Replication Monitor" Target="[INSTALLDIR]\mingw64\bin\python3.5.exe" />
+		<RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+
+    <!--<ComponentGroup Id="licenseFiles" Directory="replmon_license">
+      <Component Id="COPYING.rtf" Guid="*">
+        <File Id="COPYING.rtf" Name="COPYING.rtf" Source="$(var.LicenseFile)" />
+      </Component>
+    </ComponentGroup>-->
+  </Fragment>
+</Wix>
