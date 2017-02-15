@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?include .\defines.wxi ?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Replication Monitor" Language="1033" Version="0.1.8" Manufacturer="Ripcord Software Ltd" UpgradeCode="{45a21844-f2d6-11e6-bc64-92361f002671}">
-    <Package Id="*" Description="Replication Monitor" Comments="Contact: your local administrator" InstallerVersion="405" Compressed="yes" Keywords="couchdb,replication" Languages="1033" Manufacturer="Ripcord Software Ltd" InstallScope="perMachine"/>
+  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)" UpgradeCode="{45a21844-f2d6-11e6-bc64-92361f002671}">
+    <Package Id="*" Description="$(var.ProductName)" Comments="Contact: your local administrator" InstallerVersion="405" Compressed="yes" Keywords="couchdb,replication" Languages="1033" Manufacturer="$(var.Manufacturer)" InstallScope="perMachine"/>
     <!--<Icon Id="icon.ico" SourceFile="$(var.TopDir)\gedit\resources\pixmaps\gedit.ico"/>
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />-->
     <Media Id="1" Cabinet="data.cab" EmbedCab="yes" />
@@ -15,6 +16,8 @@
 
     <!-- UI -->
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+    <Property Id="PYTHON_EXE" Value="$(var.PythonExe)" />
+    <Property Id="REPLMON_PY" Value="usr\local\replication-monitor\replication_monitor.py" />
     <!--<WixVariable Id="WixUIBannerBmp" Value="$(var.TopDir)\win32\installer\WixUIBannerBmp.bmp" />
     <WixVariable Id="WixUIDialogBmp" Value="$(var.TopDir)\win32\installer\WixUIDialogBmp.bmp" />
     <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseFile)" />
@@ -39,15 +42,15 @@
   <!-- Directory Tree -->
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFiles64Folder" Name="ProgramFiles64Folder">
-        <Directory Name="Replication Monitor" Id="replmon_dir">
+      <Directory Id="$(var.PlatformProgramFilesFolder)" Name="$(var.PlatformProgramFilesFolder)">
+        <Directory Name="$(var.ProductName)" Id="replmon_dir">
           <Directory Id="INSTALLDIR">
             <!--<Directory Name="license" Id="replmon_license" />-->
           </Directory>
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ProgramMenuDir" Name="Replication Monitor" />
+        <Directory Id="ProgramMenuDir" Name="$(var.ProductName)" />
       </Directory>
     </Directory>
   </Fragment>
@@ -57,8 +60,8 @@
     <ComponentGroup Id="startMenuShortcuts">
       <Component Id="programShortcuts" Guid="{d3723c12-f2d6-11e6-bc64-92361f002671}" Directory="ProgramMenuDir">
         <RegistryValue Key="Software\[Manufacturer]\[ProductName]" Root="HKCU" Type="string" Value="[INSTALLDIR]" Name="InstallPath" />
-        <Shortcut Id="replmonExec" Name="Replication Monitor" Description="Replication Monitor" Target="[INSTALLDIR]\mingw64\bin\python3.5.exe" />
-		<RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+        <Shortcut Id="replmonExec" Name="$(var.ProductName)" Description="$(var.ProductName)" Target="[INSTALLDIR]\[PYTHON_EXE]" WorkingDirectory="INSTALLDIR" Arguments="[REPLMON_PY]" />
+        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
       </Component>
     </ComponentGroup>
 

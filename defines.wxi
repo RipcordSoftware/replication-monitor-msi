@@ -1,0 +1,12 @@
+<Include>
+  <?if $(sys.BUILDARCH) = x64 ?>    
+    <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+	<?define PythonExe = "mingw64\bin\python3w.exe" ?>
+  <?else ?>
+    <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+	<?define PythonExe = "mingw32\bin\python3w.exe" ?>
+  <?endif ?>
+  <?define ProductName = "Replication Monitor" ?>
+  <?define ProductVersion = "0.1.8"?>
+  <?define Manufacturer = "Ripcord Software"?>
+</Include>
