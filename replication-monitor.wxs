@@ -3,8 +3,8 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)" UpgradeCode="{45a21844-f2d6-11e6-bc64-92361f002671}">
     <Package Id="*" Description="$(var.ProductName)" Comments="Contact: your local administrator" InstallerVersion="405" Compressed="yes" Keywords="couchdb,replication" Languages="1033" Manufacturer="$(var.Manufacturer)" InstallScope="perMachine"/>
-    <!--<Icon Id="icon.ico" SourceFile="$(var.TopDir)\gedit\resources\pixmaps\gedit.ico"/>
-    <Property Id="ARPPRODUCTICON" Value="icon.ico" />-->
+    <Icon Id="icon.ico" SourceFile="images\replication-monitor.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
     <Media Id="1" Cabinet="data.cab" EmbedCab="yes" />
 
     <!-- Features -->
@@ -60,7 +60,7 @@
     <ComponentGroup Id="startMenuShortcuts">
       <Component Id="programShortcuts" Guid="{d3723c12-f2d6-11e6-bc64-92361f002671}" Directory="ProgramMenuDir">
         <RegistryValue Key="Software\[Manufacturer]\[ProductName]" Root="HKCU" Type="string" Value="[INSTALLDIR]" Name="InstallPath" />
-        <Shortcut Id="replmonExec" Name="$(var.ProductName)" Description="$(var.ProductName)" Target="[INSTALLDIR]\[PYTHON_EXE]" WorkingDirectory="INSTALLDIR" Arguments="[REPLMON_PY]" />
+        <Shortcut Id="replmonExec" Name="$(var.ProductName)" Description="$(var.ProductName)" Target="[INSTALLDIR]\[PYTHON_EXE]" WorkingDirectory="INSTALLDIR" Arguments="[REPLMON_PY]" Icon="icon.ico" />
         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
       </Component>
     </ComponentGroup>
