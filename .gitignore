@@ -1,6 +1,1 @@
-SourceDir
-binaries.wxs
-*.wixobj
-*.wixpdb
-*.msi
-tmp/*
+build
