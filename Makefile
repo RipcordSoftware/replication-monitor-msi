@@ -14,9 +14,9 @@ WIX_ROOT?=/c/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10/bin
 WIX_ARCH:=$(ARCH)
 
 # debug variables
-DISABLE_PYTHON?=
-DISABLE_GTK?=
-DISABLE_CLONE?=
+DISABLE_PYTHON?=no
+DISABLE_GTK?=no
+DISABLE_CLONE?=no
 
 .PHONY: all clean .binaries .binaries_init .binaries_core .binaries_gtk .binaries_python .binaries_source .binaries_trim .installer
 
@@ -43,28 +43,34 @@ tmp/license.rtf:
 	echo "\par}" >> $@
 
 .binaries: .binaries_python .binaries_source
-	if [ "$(DISABLE_PYTHON)" == "" -a "$(DISABLE_CLONE)" == "" ]; then \
-		"$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/python3" "$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/pip3-script.py" install -r "$(BINARIES_ROOT)/usr/local/replication-monitor/requirements.txt"; \
-	fi
+ifeq ($(DISABLE_PYTHON)$(DISABLE_CLONE), nono)
+	"$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/python3" "$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/pip3-script.py" install -r "$(BINARIES_ROOT)/usr/local/replication-monitor/requirements.txt"
+endif
 
 .binaries_python: .binaries_gtk
-	if [ "$(DISABLE_PYTHON)" == "" -a ! -f "$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/python3" ]; then \
+ifeq ($(DISABLE_PYTHON), no)
+	if [ ! -f "$(BINARIES_ROOT)/$(MINGW_ROOT)/bin/python3" ]; then \
 		pacman -S $(MINGW_PREFIX)-python3 $(MINGW_PREFIX)-python3-pip --noconfirm --root "$(BINARIES_ROOT)" && \
-		if [ "$(DISABLE_GTK)" == "" ]; then pacman -S $(MINGW_PREFIX)-python3-gobject --noconfirm --root "$(BINARIES_ROOT)"; fi; \
+		if [ "$(DISABLE_GTK)" == "no" ]; then pacman -S $(MINGW_PREFIX)-python3-gobject --noconfirm --root "$(BINARIES_ROOT)"; fi; \
 	fi
+endif
 	
 .binaries_source:
-	if [ "$(DISABLE_CLONE)" == "" -a ! -d "$(BINARIES_ROOT)/usr/local/replication-monitor" ]; then \
+ifeq ($(DISABLE_CLONE), no)
+	if [ ! -d "$(BINARIES_ROOT)/usr/local/replication-monitor" ]; then \
 		mkdir -p "$(BINARIES_ROOT)/usr/local" && \
 		pushd "$(BINARIES_ROOT)/usr/local" && \
 		git clone --recursive https://github.com/RipcordSoftware/replication-monitor.git && \
 		popd; \
 	fi
+endif
 
 .binaries_gtk: .binaries_core
-	if [ "$(DISABLE_GTK)" == "" -a ! -d "$(BINARIES_ROOT)/$(MINGW_ROOT)/lib/gtk-3.0" ]; then \
+ifeq ($(DISABLE_GTK), no)
+	if [ ! -d "$(BINARIES_ROOT)/$(MINGW_ROOT)/lib/gtk-3.0" ]; then \
 		pacman -S $(MINGW_PREFIX)-gtk3 --noconfirm --root "$(BINARIES_ROOT)"; \
 	fi
+endif
 
 .binaries_core: .binaries_init
 	if [ ! -f "$(BINARIES_ROOT)/usr/bin/bash" ]; then \
