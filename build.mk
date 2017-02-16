@@ -1,30 +1,33 @@
 # set ARCH on the command line to x86 for 32bit builds, the default is x64
 ARCH?=x64
 
-MINGW_PREFIX:=mingw-w64-x86_64
-MINGW_ROOT:=mingw64
-
-ifeq ($(ARCH), x86)
-	MINGW_PREFIX:=mingw-w64-i686
-	MINGW_ROOT:=mingw32
-endif
-
-BINARIES_ROOT:=SourceDir
-WIX_ROOT?=/c/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10/bin
-WIX_ARCH:=$(ARCH)
+# set the version for the MSI version stamp and filename
+VERSION?=0.0.0
 
 # debug variables
 DISABLE_PYTHON?=no
 DISABLE_GTK?=no
 DISABLE_CLONE?=no
 
+ifeq ($(ARCH), x86)
+	MINGW_PREFIX:=mingw-w64-i686
+	MINGW_ROOT:=mingw32
+else
+	MINGW_PREFIX:=mingw-w64-x86_64
+	MINGW_ROOT:=mingw64
+endif
+
+BINARIES_ROOT:=SourceDir
+WIX_ROOT?=/c/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10/bin
+WIX_ARCH:=$(ARCH)
+
 .PHONY: all clean .binaries .binaries_init .binaries_core .binaries_gtk .binaries_python .binaries_source .binaries_trim .installer
 
 all: .installer
 
-.installer: replication-monitor.msi
+.installer: replication-monitor-$(VERSION)-$(ARCH).msi
 
-replication-monitor.msi: binaries.wixobj replication-monitor.wixobj
+replication-monitor-$(VERSION)-$(ARCH).msi: binaries.wixobj replication-monitor.wixobj
 	$(WIX_ROOT)/light.exe -ext WixUtilExtension -ext WixUIExtension $^ -o $@
 
 replication-monitor.wixobj: replication-monitor.wxs
