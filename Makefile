@@ -97,7 +97,11 @@ endif
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/tcl?.?; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/tk?.?; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/sql*; \
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/terminfo; \
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/pkgconfig; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/python3.5/test; \
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/python3.5/site-packages/pip/*; \
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/lib/python3.5/__pycache__/*; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/gtk-doc; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/man; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/doc; \
@@ -108,8 +112,10 @@ endif
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/tdbc*; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/sql*; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/pkgconfig; \
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/share/mime; \
 	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/bin/gtk3-demo*.exe; \
-	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/include/*
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/include/*; \
+	rm -rf "$(BINARIES_ROOT)"/$(MINGW_ROOT)/var/cache/fontconfig/*
 
 clean:
 	rm -rf $(BINARIES_ROOT); \
