@@ -2,7 +2,7 @@
 A Windows installer for Replication Monitor built with MSYS2 and WiX
 
 ## Requirements
-* An installation of MSYS2 on Windows
+* An installation of MSYS2 on Windows (http://www.msys2.org/)
 * Installed on MSYS2: git, bash, coreutils (for sed, cp, etc.) and make
 * An installation of WiX Toolset 3.10 (http://wixtoolset.org/)
 
